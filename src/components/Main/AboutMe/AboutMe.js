@@ -1,6 +1,6 @@
 import './AboutMe.css';
 import photo from '../../../images/photo.JPG';
-import Heading from "../../Heading/Heading";
+import Heading from "../Heading/Heading";
 
 function AboutMe() {
   return (

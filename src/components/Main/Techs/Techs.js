@@ -1,5 +1,5 @@
 import './Techs.css';
-import Heading from '../../Heading/Heading';
+import Heading from '../Heading/Heading';
 
 function Techs() {
   return (

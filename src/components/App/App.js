@@ -4,11 +4,12 @@ import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Navigation from "../Navigation/Navigation";
 import Header from "../Header/Header";
+import Profile from "../Profile/Profile";
 
 function App() {
   return (
     <div className="App">
-      <Header/>
+      <Profile/>
     </div>
   );
 }

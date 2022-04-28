@@ -3,6 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  background-color: #5C5C5C;
 }
 
 .header__home {

@@ -9,13 +9,14 @@ import Header from '../Header/Header';
 import Profile from '../Profile/Profile';
 import AboutMe from "../Main/AboutMe/AboutMe";
 import Techs from '../Main/Techs/Techs';
+import Portfolio from "../Main/Portfolio/Portfolio";
 
 function App() {
   const history = useHistory();
 
   return (
     <div className='app'>
-      <Techs/>
+      <Portfolio/>
     </div>
   );
 }

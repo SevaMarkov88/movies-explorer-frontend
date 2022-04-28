@@ -1,6 +1,6 @@
 import './Navigation.css';
-import { ReactComponent as NavigationIcon } from '../../images/burger.svg';
-import { ReactComponent as CrossIcon } from '../../images/cross.svg';
+import { ReactComponent as NavigationIcon } from '../../../images/burger.svg';
+import { ReactComponent as CrossIcon } from '../../../images/cross.svg';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 

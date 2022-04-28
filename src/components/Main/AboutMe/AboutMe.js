@@ -27,8 +27,8 @@ function AboutMe() {
               className='about-me__link'
               target='_blank'
               rel='noreferrer'
-              href='https://www.linkedin.com/in/vsevolod-markov-72b168169/'>
-              LinkedIn
+              href='https://www.facebook.com/'>
+              Facebook
             </a>
             <a
               className='about-me__link'

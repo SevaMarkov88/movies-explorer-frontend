@@ -1,12 +1,13 @@
 import './Profile.css';
 import { useContext, useState } from 'react';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 function Profile() {
-  const currentUser = useContext({});
+  const currentUser = useContext(CurrentUserContext);
   const [submitPossible, setSubmitPossible] = useState(false);
   const [userInfo, setUserInfo] = useState({
-    name: 'John Smith',
-    email: 'johnsmith@mail.com',
+    name: currentUser.name,
+    email: currentUser.email,
   });
   const [errors, setErrors] = useState({});
 

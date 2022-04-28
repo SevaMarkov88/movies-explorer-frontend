@@ -1,5 +1,5 @@
 import './Promo.css';
-import NavTab from '../NavTab/NavTab';
+import {ReactComponent as PromoImg} from "../../../images/promo.svg";
 
 function Promo() {
   return (
@@ -7,7 +7,7 @@ function Promo() {
       <h1 className='promo__heading'>
         Учебный проект студента факультета Веб&#8209;разработки.
       </h1>
-      <NavTab />
+      <PromoImg className='promo__img'/>
     </section>
   );
 }

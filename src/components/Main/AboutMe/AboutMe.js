@@ -1,9 +1,11 @@
 import './AboutMe.css';
 import photo from '../../../images/photo.JPG';
+import Heading from "../../Heading/Heading";
 
 function AboutMe() {
   return (
     <article className='about-me' id='about-me'>
+      <Heading text='Студент'/>
       <section className='about-me__container'>
         <img className='about-me__photo' src={photo} alt='Seva, student.'/>
         <div className='about-me__texts'>

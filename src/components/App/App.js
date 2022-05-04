@@ -10,6 +10,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
+import SearchForm from "../Movies/SearchForm/SearchForm";
 
 function App() {
   const history = useHistory();
@@ -44,6 +45,7 @@ function App() {
           />
           <Main/>
           <Footer/>
+          <SearchForm/>
           <MoviesCardList
             movies={movies}
           />

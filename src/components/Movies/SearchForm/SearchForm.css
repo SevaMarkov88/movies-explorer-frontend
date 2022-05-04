@@ -1,0 +1,130 @@
+.search-form {
+  box-sizing: border-box;
+  padding: 80px 70px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid rgba(170, 170, 170, 0.2);
+;;
+}
+
+.search-form__search {
+  width: 65vw;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.search-form__input {
+  border: 2px solid #AAAAAA;
+  border-radius: 50px;
+  height: 48px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  width: 100%;
+  vertical-align: center;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #000;
+}
+
+.search-form__input::placeholder {
+  color: #a0a0a0;
+}
+
+.search-form__input:focus {
+  outline: none;
+  box-shadow: 0 0 5px 0 #2be080;
+}
+
+.search-form__button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  margin: -41px;
+  height: 34px;
+}
+
+.search-form__button:hover {
+  opacity: 0.6;
+}
+
+.search-form__button:focus {
+  outline: none;
+}
+
+@media screen and (min-width: 768px) {
+  .search-form {
+  }
+
+  .search-form__input {
+    padding: 15px 22px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .search-form {
+  }
+}
+
+/* The box around the slider */
+.filter-checkbox {
+  width: 167px;
+  height: 20px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+}
+
+/* Hide default HTML checkbox */
+.filter-checkbox__default {
+  display: none;
+}
+
+.filter-checkbox__slider {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: 20px;
+  background-color: #ebebeb;
+  transition: 0.4s;
+  display: block;
+}
+
+.filter-checkbox__slider:before {
+  position: absolute;
+  content: '';
+  height: 8px;
+  width: 8px;
+  border-radius: 4px;
+  left: 6px;
+  top: 6px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.filter-checkbox__default:checked ~ .filter-checkbox__slider {
+  background-color: #2be080;
+}
+
+.filter-checkbox__default:checked ~ .filter-checkbox__slider:before {
+  transform: translateX(16px);
+}
+
+.filter-checkbox__label {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 18px;
+  margin-right: 14px;
+}
+
+@media screen and (min-width: 768px) {
+  .filter-checkbox__label {
+    font-size: 12px;
+  }
+}

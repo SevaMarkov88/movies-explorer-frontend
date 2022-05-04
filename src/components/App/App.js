@@ -9,8 +9,7 @@ import Footer from "../Footer/Footer";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
-import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
-import SearchForm from "../Movies/SearchForm/SearchForm";
+import Movies from "../Movies/Movies";
 
 function App() {
   const history = useHistory();
@@ -45,10 +44,6 @@ function App() {
           />
           <Main/>
           <Footer/>
-          <SearchForm/>
-          <MoviesCardList
-            movies={movies}
-          />
         </Route>
 
         <Route path='/signin'>
@@ -65,11 +60,22 @@ function App() {
             signUp={signUp}
           />
         </Route>
-        <Route>
+
+        <Route path='/profile'>
           <Header
             isNavigation={!isLogged}
           />
           <Profile/>
+        </Route>
+
+        <Route path='/movies'>
+          <Header
+            isNavigation={!isLogged}
+          />
+          <Movies
+            movies={movies}
+          />
+          <Footer/>
         </Route>
       </Switch>
     </div>

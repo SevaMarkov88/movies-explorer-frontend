@@ -1,4 +1,4 @@
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { useState } from 'react';
 import './App.css';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
@@ -10,9 +10,9 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
+import SavedMovies from "../SavedMovies/SavedMovies";
 
 function App() {
-  const history = useHistory();
   const [isLogged, setIsLogged] = useState(false);
   const [currentUser, setCurrentUser] = useState(
     {name: 'John', email: 'johnsmith@mail.com'}
@@ -73,6 +73,16 @@ function App() {
             isNavigation={!isLogged}
           />
           <Movies
+            movies={movies}
+          />
+          <Footer/>
+        </Route>
+
+        <Route path='/saved-movies'>
+          <Header
+            isNavigation={!isLogged}
+          />
+          <SavedMovies
             movies={movies}
           />
           <Footer/>

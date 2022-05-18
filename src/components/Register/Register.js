@@ -6,18 +6,32 @@ import Input from '../Form/Input/Input';
 import SignNav from "../Form/SignNav/SignNav";
 import SubmitButton from "../Form/SubmitButton/SubmitButton";
 
-function Register() {
+function Register({ validate, signUp }) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [submitPossible, setSubmitPossible] = useState(true);
 
-  function handleChange() {
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
 
+    const { [name]: removedError, ...rest } = errors;
+    const error = validate[name](value);
+    setErrors({
+      ...rest,
+      ...(error && { [name]: values[name] && error }),
+    });
   }
 
-  function handleSignUp() {
-
+  function handleSignUp(e) {
+    e.preventDefault();
+    const { email, password, name } = values;
+    signUp(email, password, name);
   }
+
 
   return (
     <section className='register'>

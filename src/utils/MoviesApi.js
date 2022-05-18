@@ -31,7 +31,7 @@ const basicHeaders = {
 };
 
 const moviesApi = new MoviesApi({
-  baseUrl: 'https://api.nomoreparties.co',
+  baseUrl: 'https://api.nomoreparties.co/beatfilm-movies',
   headers: basicHeaders,
 });
 

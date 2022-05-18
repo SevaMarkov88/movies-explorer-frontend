@@ -1,22 +1,32 @@
 import './Input.css';
 
-function Input(props) {
+function Input({
+                 label,
+                 type,
+                 value,
+                 onChange,
+                 onBlur,
+                 name,
+                 errors,
+                 placeholder,
+                 autoComplete,
+               }) {
   return (
     <label className='input__outside'>
-      {props.label}
+      {label}
       <input
-        className={`input__inside ${props.errors ? 'input__inside__error' : ''}`}
-        type={props.type}
-        value={props.value}
-        onChange={props.onChange}
-        onBlur={props.onBlur}
-        name={props.name}
-        placeholder={props.placeholder}
-        autoComplete={props.autoComplete}
+        className={`input__inside ${errors ? 'input__inside__error' : ''}`}
+        type={type}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        name={name}
+        placeholder={placeholder}
+        autoComplete={autoComplete}
       />
-      {props.errors && <p className='input__error'>{props.errors}</p>}
+      {errors && <p className='input__error'>{errors}</p>}
     </label>
-  )
+  );
 }
 
 export default Input;

@@ -1,7 +1,7 @@
 import './FormHeader.css';
 import {NavLink} from "react-router-dom";
 
-function FormHeader(props) {
+function FormHeader({title}) {
   return (
     <header className='form-header'>
       <NavLink to='/'>
@@ -15,7 +15,7 @@ function FormHeader(props) {
                 fill='white'/>
         </svg>
       </NavLink>
-      <h1 className='form-header__title'>{props.title}</h1>
+      <h1 className='form-header__title'>{title}</h1>
     </header>
   )
 }

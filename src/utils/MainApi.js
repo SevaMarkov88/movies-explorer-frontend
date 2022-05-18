@@ -99,9 +99,10 @@ const basicHeaders = {
 };
 
 const mainApi = new MainApi({
-  baseUrl: 'http://localhost:3000/',
+  baseUrl: 'http://movies.markov.nomoredomains.work',
   headers: basicHeaders,
 });
 
 //'http://movies.markov.nomoredomains.work/'
+
 export default mainApi;

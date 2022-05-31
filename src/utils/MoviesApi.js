@@ -4,7 +4,7 @@ class MoviesApi {
         this._headers = headers;
     }
 
-    getSavedMovies() {
+    getMovies() {
         return fetch(`${this._baseUrl}`, { headers: this._headers }).then((res) =>
             this._checkRes(res)
         );

@@ -27,7 +27,8 @@ class MainApi {
 
 
 const mainApi = new MainApi({
-    baseUrl: 'http://movies.markov.nomoredomains.work',
+    baseUrl: "http://movies.markov.nomoredomains.work",
+    // baseUrl: "http://localhost:3000",
     headers: {
         'Content-Type': 'application/json'
     }

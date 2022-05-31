@@ -14,7 +14,6 @@ class Auth {
     register(password, email, name) {
         return fetch(`${this._url}/signup`, {
             method: "POST",
-            credentials: 'include',
             headers: this._headers,
             body: JSON.stringify({
                 password: password,
@@ -27,8 +26,6 @@ class Auth {
     authorize(password, email) {
         return fetch(`${this._url}/signin`, {
             method: "POST",
-            mode: 'cors',
-            credentials: 'include',
             headers: this._headers,
             body: JSON.stringify({
                 password: password,
@@ -52,6 +49,7 @@ class Auth {
 
 const authApi = new Auth({
     baseUrl: "http://movies.markov.nomoredomains.work",
+    // baseUrl: "http://localhost:3000",
     headers: {
         "Content-Type": "application/json",
     },

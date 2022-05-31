@@ -49,11 +49,11 @@ class Auth {
     }
 }
 
-const auth = new Auth({
-    baseUrl: "https://http://movies.markov.nomoredomains.work",
+const authApi = new Auth({
+    baseUrl: "http://movies.markov.nomoredomains.work",
     headers: {
         "Content-Type": "application/json",
     },
 });
 
-export { auth };
+export { authApi };

@@ -27,6 +27,7 @@ class Auth {
     authorize(password, email) {
         return fetch(`${this._url}/signin`, {
             method: "POST",
+            mode: 'cors',
             credentials: 'include',
             headers: this._headers,
             body: JSON.stringify({

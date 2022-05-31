@@ -6,31 +6,37 @@ import SignNav from '../Form/SignNav/SignNav';
 import { useState } from 'react';
 import './Login.css';
 
-function Login() {
-  const [values, setValues] = useState({});
+function Login(props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [submitPossible, setSubmitPossible] = useState(true);
 
-  function handleChange() {
-
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
   }
 
-  function handleSignIn() {
+  function handlePasswordChange(e) {
+      setPassword(e.target.value);
+  }
 
+  function handleSubmit(e) {
+      e.preventDefault();
+      props.handleSignIn(password, email)
   }
 
   return (
     <section className='login'>
       <FormHeader title='Рады видеть!' />
-      <Form onSubmit={handleSignIn}>
+      <Form onSubmit={handleSubmit}>
         <div>
           <Input
             name='email'
             label='E-mail'
             type='email'
             autoComplete='username'
-            value={values.email || ''}
-            onChange={handleChange}
+            value={email || ''}
+            onChange={handleEmailChange}
             errors={errors.email}
             placeholder='johnsmith@mail.com'
           />
@@ -39,8 +45,8 @@ function Login() {
             label='Пароль'
             type='password'
             autoComplete='current-password'
-            value={values.password || ''}
-            onChange={handleChange}
+            value={password || ''}
+            onChange={handlePasswordChange}
             errors={errors.password}
             placeholder='Супер надежный пароль'
           />

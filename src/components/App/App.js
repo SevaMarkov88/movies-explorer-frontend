@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import './App.css';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
@@ -12,8 +12,12 @@ import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import moviesApi from "../../utils/MoviesApi";
+import {authApi} from "../../utils/authApi";
+import {mainApi} from "../../utils/MainApi";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
+  const history = useHistory();
   const [isLogged, setIsLogged] = useState(false);
   const [currentUser, setCurrentUser] = useState(
     {name: 'John', email: 'johnsmith@mail.com'}
@@ -24,14 +28,26 @@ function App() {
     moviesApi.getMovies()
         .then((data) => setMovies(data))
         .catch((err) => console.log(err))
-  })
+  }, []);
 
-  function handleSignIn() {
-
+  function handleSignIn(password, email) {
+    authApi.authorize(password, email)
+        .then(() => {
+          singInSuccess();
+          history.push('/movies');
+        })
+        .catch((err) => console.log(err))
   }
 
   function handleSignUp() {
 
+  }
+
+  function singInSuccess() {
+    setIsLogged(true);
+    mainApi.getUserInfo()
+        .then((data) => setCurrentUser(data))
+        .catch((err) => console.log(err))
   }
 
   return (
@@ -61,14 +77,14 @@ function App() {
           />
         </Route>
 
-        <Route path='/profile'>
+        <ProtectedRoute path='/profile'>
           <Header
             isNavigation={!isLogged}
           />
           <Profile/>
-        </Route>
+        </ProtectedRoute>
 
-        <Route path='/movies'>
+        <ProtectedRoute path='/movies'>
           <Header
             isNavigation={!isLogged}
           />
@@ -76,9 +92,9 @@ function App() {
             movies={movies}
           />
           <Footer/>
-        </Route>
+        </ProtectedRoute>
 
-        <Route path='/saved-movies'>
+        <ProtectedRoute path='/saved-movies'>
           <Header
             isNavigation={!isLogged}
           />
@@ -86,7 +102,7 @@ function App() {
             movies={movies}
           />
           <Footer/>
-        </Route>
+        </ProtectedRoute>
       </Switch>
     </div>
     </CurrentUserContext.Provider>

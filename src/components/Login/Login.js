@@ -9,7 +9,7 @@ import './Login.css';
 function Login({ initialValues, validate, signIn }) {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
-  const [submitPossible, setSubmitPossible] = useState(true);
+  const [submitPossible, setSubmitPossible] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -24,6 +24,11 @@ function Login({ initialValues, validate, signIn }) {
       ...rest,
       ...(error && { [name]: values[name] && error }),
     });
+    if (Object.keys(values).length == 2 && Object.keys(errors).length == 0) {
+      setSubmitPossible(true);
+    } else {
+      setSubmitPossible(false);
+    }
   }
 
   function handleSignIn(e) {
@@ -45,7 +50,7 @@ function Login({ initialValues, validate, signIn }) {
             value={values.email || ''}
             onChange={handleChange}
             errors={errors.email}
-            placeholder='name@some.io'
+            placeholder='name@mail.com'
           />
           <Input
             name='password'

@@ -24,6 +24,11 @@ function Register({ validate, signUp }) {
       ...rest,
       ...(error && { [name]: values[name] && error }),
     });
+    if (Object.keys(values).length == 3 && Object.keys(errors).length == 0) {
+      setSubmitPossible(true);
+    } else {
+      setSubmitPossible(false);
+    }
   }
 
   function handleSignUp(e) {
@@ -45,7 +50,7 @@ function Register({ validate, signUp }) {
             value={values.name || ''}
             onChange={handleChange}
             errors={errors.name}
-            placeholder='Самый сладкий кренделёк'
+            placeholder='John'
           />
           <Input
             name='email'
@@ -55,7 +60,7 @@ function Register({ validate, signUp }) {
             value={values.email || ''}
             onChange={handleChange}
             errors={errors.email}
-            placeholder='krendel@world.io'
+            placeholder='name@mail.com'
           />
           <Input
             name='password'

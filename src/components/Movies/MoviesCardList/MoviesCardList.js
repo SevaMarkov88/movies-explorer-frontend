@@ -1,24 +1,64 @@
 import './MoviesCardList.css';
-import MoviesCard from '../MoviesCard/MoviesCard';
-import {useState} from "react";
+import MovieCard from '../MoviesCard/MoviesCard';
+import { useState } from 'react';
 
-function MoviesCardList(props) {
-  const [isCardSaved, setCardSaved] = useState(false);
+function MoviesCardList({
+                          place,
+                          moviesToRender,
+                          mySavedMovies,
+                          handleMovieSave,
+                          handleMovieDelete,
+                        }) {
+  const [showMovies, setShowMovies] = useState(4);
+  function handleMore() {
+    setShowMovies(Math.min(moviesToRender.length, showMovies + 4));
+  }
+
+  const idsOfMySavedMovies = {};
+  if (place === 'all-movies') {
+    for (const movie of mySavedMovies) {
+      idsOfMySavedMovies[movie.movieId] = true;
+    }
+  }
 
   return (
     <section className='movies-card-list'>
-      {props.movies.map((item, index) => {
-        return (
-          <MoviesCard
-            movie={item}
-            isSaved={isCardSaved}
-            movieIndex={index}
-            key={item._id}
-          />
-        )})}
-        <button className='movies-card-list__more'>
+      {moviesToRender &&
+        moviesToRender.slice(0, showMovies).map((movie) => {
+          let isSaved;
+          switch (place) {
+            case 'all-movies':
+              if (idsOfMySavedMovies[movie.id]) {
+                isSaved = true;
+              } else {
+                isSaved = false;
+              }
+              break;
+            case 'saved-movies':
+              isSaved = true;
+              break;
+            default:
+              console.error('Что-то пошло не так.');
+              break;
+          }
+
+          return (
+            <MovieCard
+              movieData={movie}
+              place={place}
+              isSaved={isSaved}
+              key={movie.id || movie.movieId}
+              handleMovieDelete={handleMovieDelete}
+              handleMovieSave={handleMovieSave}
+            />
+          );
+        })}
+
+      {moviesToRender && moviesToRender.length > showMovies && (
+        <button className='movies-card-list__more' onClick={handleMore}>
           Ещё
         </button>
+      )}
     </section>
   );
 }

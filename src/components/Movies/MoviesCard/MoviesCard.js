@@ -1,25 +1,68 @@
+import src from '../../../images/movie.png';
+import { BASE_MOVIES_URL } from '../../../constants/constants';
 import './MoviesCard.css';
-import {useEffect} from "react";
 
-function MoviesCard(props) {
-  function movieDelete() {
+function MovieCard({
+                     movieData,
+                     place,
+                     isSaved,
+                     handleMovieDelete,
+                     handleMovieSave,
+                   }) {
+  const { nameRU, duration, image, trailerLink, trailer } = movieData;
 
+  let imageUrl;
+  let trailerUrl;
+  switch (place) {
+    case 'all-movies':
+      imageUrl = image ? BASE_MOVIES_URL + image.url : src;
+      trailerUrl = trailerLink ? trailerLink : '#';
+      break;
+    case 'saved-movies':
+      imageUrl = image ? image : src;
+      trailerUrl = trailer ? trailer : '#';
+      break;
+    default:
+      break;
   }
 
-  function movieSave() {
+  function formatDuration(duration) {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
 
+    let formattedDuration = '';
+    if (hours > 0) {
+      formattedDuration += hours + 'ч';
+    }
+    if (hours > 0 && minutes > 0) {
+      formattedDuration += ' ';
+    }
+    if (minutes > 0) {
+      formattedDuration += minutes + 'м';
+    }
+
+    return formattedDuration;
+  }
+  const formattedDuration = formatDuration(duration);
+
+  function movieDelete(params) {
+    handleMovieDelete(movieData);
+  }
+
+  function movieSave(params) {
+    handleMovieSave(movieData);
   }
 
   return (
     <figure className='movie-card'>
       <a
         className='movie-card__link'
-        href={props.movie.trailerUrl}
+        href={trailerUrl}
         target='_blank'
         rel='noreferrer'>
         <img
-          src={props.movie.imageUrl}
-          alt={props.movie.nameRU ? props.movie.nameRU : 'Фильм без названия'}
+          src={imageUrl}
+          alt={nameRU ? nameRU : 'Фильм без названия'}
           className='movie-card__image'
         />
       </a>
@@ -27,59 +70,29 @@ function MoviesCard(props) {
       <figcaption className='movie-card__caption'>
         <div className='movie-card__text-block'>
           <p className='movie-card__title'>
-            {props.movie.nameRU ? props.movie.nameRU : 'Фильм без названия'}
+            {nameRU ? nameRU : 'Фильм без названия'}
           </p>
-          <p className='movie-card__duration'>{props.movie.duration}</p>
+          <p className='movie-card__length'>{formattedDuration}</p>
         </div>
-        {props.isSaved ?
-          (<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g filter="url(#filter0_d_13056_3579)">
-          <circle cx="14" cy="11" r="8" fill="#2BE080"/>
-        </g>
-        <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M14 17C17.3137 17 20 14.3137 20 11C20 7.68629 17.3137 5 14 5C10.6863 5 8 7.68629 8 11C8 14.3137 10.6863 17 14 17ZM14 19C18.4183 19 22 15.4183 22 11C22 6.58172 18.4183 3 14 3C9.58172 3 6 6.58172 6 11C6 15.4183 9.58172 19 14 19Z"
-              fill="white"/>
-        <defs>
-          <filter id="filter0_d_13056_3579" x="0" y="0" width="28" height="28" filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB">
-            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                           result="hardAlpha"/>
-            <feOffset dy="3"/>
-            <feGaussianBlur stdDeviation="3"/>
-            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.09 0"/>
-            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_13056_3579"/>
-            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_13056_3579" result="shape"/>
-          </filter>
-        </defs>
-      </svg>)
-          :
-          (<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g filter="url(#filter0_d_13056_3582)">
-          <rect x="6" y="3" width="16" height="16" rx="8" fill="#F9F9F9"/>
-          </g>
-          <path fill-rule="evenodd" clip-rule="evenodd"
-          d="M14 17C17.3137 17 20 14.3137 20 11C20 7.68629 17.3137 5 14 5C10.6863 5 8 7.68629 8 11C8 14.3137 10.6863 17 14 17ZM14 19C18.4183 19 22 15.4183 22 11C22 6.58172 18.4183 3 14 3C9.58172 3 6 6.58172 6 11C6 15.4183 9.58172 19 14 19Z"
-          fill="white"/>
-          <defs>
-          <filter id="filter0_d_13056_3582" x="0" y="0" width="28" height="28" filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB">
-          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha"/>
-          <feOffset dy="3"/>
-          <feGaussianBlur stdDeviation="3"/>
-          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.09 0"/>
-          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_13056_3582"/>
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_13056_3582" result="shape"/>
-          </filter>
-          </defs>
-          </svg>)
-        }
 
+        {place === 'saved-movies' && (
+          <button
+            className='movie-card__btn movie-card__btn_type_cross'
+            onClick={movieDelete}
+          />
+        )}
+
+        {place === 'all-movies' && (
+          <button
+            className={`movie-card__btn movie-card__btn_type_${
+              isSaved ? 'full-heart' : 'empty-heart'
+            }`}
+            onClick={isSaved ? movieDelete : movieSave}
+          />
+        )}
       </figcaption>
     </figure>
   );
 }
 
-export default MoviesCard;
+export default MovieCard;

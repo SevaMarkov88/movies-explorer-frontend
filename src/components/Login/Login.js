@@ -3,52 +3,59 @@ import Input from '../Form/Input/Input';
 import SubmitButton from '../Form/SubmitButton/SubmitButton';
 import Form from '../Form/Form';
 import SignNav from '../Form/SignNav/SignNav';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Login.css';
 
-function Login(props) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function Login({ initialValues, validate, signIn }) {
+  const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [submitPossible, setSubmitPossible] = useState(true);
 
-  function handleEmailChange(e) {
-    setEmail(e.target.value);
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
+
+    const { [name]: removedError, ...rest } = errors;
+    const error = validate[name](value);
+    setErrors({
+      ...rest,
+      ...(error && { [name]: values[name] && error }),
+    });
   }
 
-  function handlePasswordChange(e) {
-      setPassword(e.target.value);
-  }
-
-  function handleSubmit(e) {
-      e.preventDefault();
-      props.handleSignIn(password, email)
+  function handleSignIn(e) {
+    e.preventDefault();
+    const { email, password } = values;
+    signIn(email, password);
   }
 
   return (
     <section className='login'>
-      <FormHeader title='Рады видеть!' />
-      <Form onSubmit={handleSubmit}>
+      <FormHeader text='Рады видеть!' />
+      <Form onSubmit={handleSignIn}>
         <div>
           <Input
             name='email'
             label='E-mail'
             type='email'
             autoComplete='username'
-            value={email || ''}
-            onChange={handleEmailChange}
+            value={values.email || ''}
+            onChange={handleChange}
             errors={errors.email}
-            placeholder='johnsmith@mail.com'
+            placeholder='name@some.io'
           />
           <Input
             name='password'
             label='Пароль'
             type='password'
             autoComplete='current-password'
-            value={password || ''}
-            onChange={handlePasswordChange}
+            value={values.password || ''}
+            onChange={handleChange}
             errors={errors.password}
-            placeholder='Супер надежный пароль'
+            placeholder='пароль из не менее чем восьми символов'
           />
         </div>
         <SubmitButton submitPossible={submitPossible} label='Войти' />

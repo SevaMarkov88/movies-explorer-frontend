@@ -1,34 +1,30 @@
-import './InfoTooltip.css';
-import React from 'react';
+import React from "react";
 
-function InfoTooltip({ isOpen, isSuccessful, onClose, positiveMessage }) {
-  function handleClose() {
-    onClose();
-  }
-
+function InfoTooltip(props) {
   return (
-    <article className={`popup ${isOpen ? 'popup_shown' : ''}`}>
-      <div className='popup__overlay' />
-      <figure className='popup__form'>
-        <button
-          className='popup__close-button'
-          type='button'
-          onClick={handleClose}
-        />
+    <>
+      <div
+        className={`popup popup_infotooltip popup_transition ${
+          props.isOpen ? "popup_opened" : ""
+        }`}
+        onClick={props.onClose}
+      >
         <div
-          className={`popup__big-icon ${
-            isSuccessful
-              ? 'popup__big-icon_type_success'
-              : 'popup__big-icon_type_fail'
-          }`}
-        />
-        <h2 className='popup__bold-text'>
-          {isSuccessful
-            ? positiveMessage
-            : 'Что-то пошло не так! Попробуйте ещё раз.'}
-        </h2>
-      </figure>
-    </article>
+          className="popup__container"
+          onClick={(evt) => evt.stopPropagation()}
+        >
+          <button
+            className="popup__close-btn"
+            type="button"
+            onClick={props.onClose}
+          ></button>
+          <div className="popup__content">
+            <img className="popup__image" src={props.union.union} alt="icon" />
+            <p className="popup__text">{props.union.text}</p>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

@@ -1,76 +1,125 @@
-import FormHeader from '../Form/FormHeader/FormHeader';
-import Input from '../Form/Input/Input';
-import SubmitButton from '../Form/SubmitButton/SubmitButton';
-import Form from '../Form/Form';
-import SignNav from '../Form/SignNav/SignNav';
-import { useState, useEffect } from 'react';
-import './Login.css';
+import React, { useEffect, useState } from "react";
+import FormAuthentication from "../FormAuthentication/FormAuthentication";
 
-function Login({ initialValues, validate, signIn }) {
-  const [values, setValues] = useState(initialValues);
-  const [errors, setErrors] = useState({});
-  const [submitPossible, setSubmitPossible] = useState(false);
+function Login(props) {
+  const [emailLogin, setEmailLogin] = useState("");
+  const [passwordLogin, setPasswordLogin] = useState("");
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setValues({
-      ...values,
-      [name]: value,
-    });
+  const [dataDirty, setDataDirty] = useState(false);
+  const [dataError, setDataError] = useState(
+    "Что-то пошло не так. Некорректный Email или неверный пароль"
+  );
+  const [formValid, setFormValid] = useState(false);
 
-    const { [name]: removedError, ...rest } = errors;
-    const error = validate[name](value);
-    setErrors({
-      ...rest,
-      ...(error && { [name]: values[name] && error }),
-    });
-    if (Object.keys(values).length == 2 && Object.keys(errors).length == 0) {
-      setSubmitPossible(true);
+  useEffect(() => {
+    if (dataError) {
+      setFormValid(false);
     } else {
-      setSubmitPossible(false);
+      setFormValid(true);
+    }
+  }, [dataError]);
+
+  function handleChangeEmail(e) {
+    setEmailLogin(e.target.value);
+    if (
+      !String(e.target.value)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+    ) {
+      setDataError(
+        "Что-то пошло не так. Некорректный Email или неверный пароль"
+      );
+      if (!e.target.value) {
+        setDataError("Email не может быть пустым");
+      }
+    } else {
+      setDataError("");
     }
   }
 
-  function handleSignIn(e) {
+  function handleChangePassword(e) {
+    setPasswordLogin(e.target.value);
+
+    if (e.target.value.length < 6 || e.target.value.length > 20) {
+      setDataError(
+        "Что-то пошло не так. Некорректный Email или неверный пароль"
+      );
+      if (!e.target.value) {
+        setDataError("Пароль не может быть пустым");
+      }
+    } else {
+      setDataError("");
+    }
+  }
+
+  function handleSubmit(e) {
     e.preventDefault();
-    const { email, password } = values;
-    signIn(email, password);
+    if (!emailLogin || !passwordLogin) {
+      return;
+    }
+    props.handleAuthorization(emailLogin, passwordLogin);
+  }
+
+  function blurHandler(e) {
+    switch (e.target.name) {
+      case "email":
+        setDataDirty(true);
+        break;
+      case "password":
+        setDataDirty(true);
+        break;
+      default:
+        break;
+    }
   }
 
   return (
-    <section className='login'>
-      <FormHeader text='Рады видеть!' />
-      <Form onSubmit={handleSignIn}>
-        <div>
-          <Input
-            name='email'
-            label='E-mail'
-            type='email'
-            autoComplete='username'
-            value={values.email || ''}
-            onChange={handleChange}
-            errors={errors.email}
-            placeholder='name@mail.com'
-          />
-          <Input
-            name='password'
-            label='Пароль'
-            type='password'
-            autoComplete='current-password'
-            value={values.password || ''}
-            onChange={handleChange}
-            errors={errors.password}
-            placeholder='пароль из не менее чем восьми символов'
-          />
-        </div>
-        <SubmitButton submitPossible={submitPossible} label='Войти' />
-      </Form>
-      <SignNav
-        label='Ещё не зарегистрированы?'
-        link='Регистрация'
-        to='/signup'
+    <FormAuthentication
+      btn="Войти"
+      paragraphLink="Ещё не зарегистрированы?"
+      to="/signup"
+      linkText="Регистрация"
+      formName="formlogin"
+      title="Рады видеть!"
+      handleSubmit={handleSubmit}
+      dataDirty={dataDirty}
+      dataError={dataError}
+      formValid={!formValid}
+    >
+      <label className="form-authentication__label" htmlFor="emaillogin">
+        E-mail
+      </label>
+      <input
+        className="form-authentication__input"
+        id="emaillogin"
+        type="email"
+        name="email"
+        value={emailLogin ? emailLogin : ""}
+        minLength="2"
+        maxLength="40"
+        onChange={handleChangeEmail}
+        onBlur={blurHandler}
+        required
       />
-    </section>
+      <label className="form-authentication__label" htmlFor="passwordregister">
+        Пароль
+      </label>
+      <input
+        className="form-authentication__input"
+        id="passwordregister"
+        type="password"
+        name="password"
+        value={passwordLogin ? passwordLogin : ""}
+        minLength="6"
+        maxLength="200"
+        onChange={handleChangePassword}
+        onBlur={blurHandler}
+        autoComplete="off"
+        required
+      />
+    </FormAuthentication>
   );
 }
 

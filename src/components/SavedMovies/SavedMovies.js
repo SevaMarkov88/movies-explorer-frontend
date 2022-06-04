@@ -1,38 +1,33 @@
-import SearchForm from '../Movies/SearchForm/SearchForm';
-import Preloader from '../Movies/Preloader/Preloader';
-import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList';
-import SearchInfo from '../Movies/SearchInfo/SearchInfo';
+import React from "react";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import Preloader from "../Preloader/Preloader";
+import SearchForm from "../SearchForm/SearchForm";
 
-function SavedMovies({
-                       preloading,
-                       search,
-                       mySavedMovies,
-                       filteredMySavedMovies,
-                       inputKeyString,
-                       searchResult,
-                       handleMovieDelete,
-                     }) {
+function SavedMovies(props) {
   return (
-    <section>
-      <SearchForm search={search} inputKeyString={inputKeyString} />
-      {preloading && <Preloader />}
-
-      {mySavedMovies && mySavedMovies.length > 0 && (
+    <div className="movies">
+      <SearchForm
+        enterHandler={props.handleSearchSaveMovie}
+        checkShortFilmsSave={props.checkShortFilmsSave}
+        onCheckedSaveFilms={props.onCheckedSaveFilms}
+        pathMoviesSave={props.pathMoviesSave}
+      />
+      {props.loaded ? (
+        <Preloader />
+      ) : (
         <MoviesCardList
-          place='saved-movies'
-          moviesToRender={
-            filteredMySavedMovies ? filteredMySavedMovies : mySavedMovies
+          saveMovies={
+            props.isFiltered ? props.saveFilterSaveMovies : props.saveMovies
           }
-          handleMovieDelete={handleMovieDelete}
+          handleDeleteSaveMovie={props.handleDeleteSaveMovie}
+          shortMovies={
+            props.isFiltered ? props.filterShortSaveMovies : props.shortMovies
+          }
+          onSaveMovie={props.handleSaveMovie}
+          onChecked={props.onCheckedSaveFilms}
         />
       )}
-      {inputKeyString &&
-        !preloading &&
-        filteredMySavedMovies &&
-        filteredMySavedMovies.length === 0 && (
-          <SearchInfo text={searchResult} />
-        )}
-    </section>
+    </div>
   );
 }
 

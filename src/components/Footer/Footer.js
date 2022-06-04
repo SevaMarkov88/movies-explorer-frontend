@@ -1,40 +1,35 @@
-import './Footer.css';
+import React from "react";
 
 function Footer() {
-  return (
-    <footer className='footer'>
-      <p className='footer__caption'>
-        Учебный проект Яндекс.Практикум х BeatFilm.
-      </p>
-      <hr className='footer__line' />
-      <div className='footer__underline-container'>
-        <section className='footer__social'>
-          <a
-            className='footer__link'
-            target='_blank'
-            rel='noreferrer'
-            href='https://praktikum.yandex.ru/profile/web/'>
-            Яндекс.Практикум
-          </a>
-          <a
-            className='footer__link'
-            target='_blank'
-            rel='noreferrer'
-            href='https://github.com/SevaMarkov88'>
-            Github
-          </a>
-          <a
-            className='footer__link'
-            target='_blank'
-            rel='noreferrer'
-            href='https://www.facebook.com/'>
-            Facebook
-          </a>
-        </section>
-        <p className='footer__copyright'>&copy; 2020</p>
-      </div>
-    </footer>
-  );
+    return (
+      <footer className="footer">
+        <div className="footer__container">
+          <p className="footer__paragraph">
+            Учебный проект Яндекс.Практикум х BeatFilm.
+          </p>
+          <div className="footer__row">
+            <p className="footer__copy">&copy; {new Date().getFullYear()}</p>
+            <ul className="footer__lists">
+              <li className="footer__list-li">
+                <a className="footer__list" href="/">
+                  Яндекс.Практикум
+                </a>
+              </li>
+              <li className="footer__list-li">
+                <a className="footer__list" href="/">
+                  Github
+                </a>
+              </li>
+              <li className="footer__list-li">
+                <a className="footer__list" href="/">
+                  Facebook
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </footer>
+    );
 }
 
 export default Footer;

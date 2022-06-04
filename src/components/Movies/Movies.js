@@ -1,36 +1,34 @@
-import SearchForm from '../Movies/SearchForm/SearchForm';
-import Preloader from '../Movies/Preloader/Preloader';
-import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList';
-import SearchInfo from '../Movies/SearchInfo/SearchInfo';
+import React from "react";
+import SearchForm from "../SearchForm/SearchForm";
+import Preloader from "../Preloader/Preloader";
 
-function Movies({
-                  search,
-                  preloading,
-                  filteredMovies,
-                  inputKeyString,
-                  searchResult,
-                  mySavedMovies,
-                  handleMovieSave,
-                  handleMovieDelete,
-                }) {
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
+
+function Movies(props) {
   return (
-    <section>
-      <SearchForm search={search} inputKeyString={inputKeyString} />
-      {preloading && <Preloader />}
-      {filteredMovies && filteredMovies.length > 0 && (
+    <div className="movies">
+      <SearchForm
+        movies={props.movies}
+        enterHandler={props.handleEnter}
+        checkShortFilms={props.checkShortFilms}
+        onCheckedFilms={props.onCheckedFilms}
+        pathMovies={props.pathMovies}
+      />
+      {props.loaded ? (
+        <Preloader />
+      ) : (
         <MoviesCardList
-          place='all-movies'
-          moviesToRender={filteredMovies}
-          mySavedMovies={mySavedMovies}
-          handleMovieSave={handleMovieSave}
-          handleMovieDelete={handleMovieDelete}
+          movies={props.isFiltered ? props.filterMovies : props.movies}
+          shortMovies={
+            props.isFiltered ? props.filterShortMovies : props.shortMovies
+          }
+          onSaveMovie={props.handleSaveMovie}
+          saveMovies={props.saveMovies}
+          handleDeleteSaveMovie={props.handleDeleteSaveMovie}
+          onChecked={props.onCheckedFilms}
         />
       )}
-      {inputKeyString &&
-        !preloading &&
-        filteredMovies &&
-        filteredMovies.length === 0 && <SearchInfo text={searchResult} />}
-    </section>
+    </div>
   );
 }
 

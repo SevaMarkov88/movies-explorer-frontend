@@ -1,111 +1,168 @@
-import './Profile.css';
-import { useContext, useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import CurrentUserContext from '../../contexts/CurrentUserContext';
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { CurrentUserContext } from "../context/CurrentUserContext";
+import BtnEditProfile from "../BtnEditProfile/BtnEditProfile";
+import BtnSaveProfile from "../BtnSaveProfile/BtnSaveProfile";
 
-function Profile({ signOut, validate, updateProfile }) {
+function Profile(props) {
   const currentUser = useContext(CurrentUserContext);
-  const [submitPossible, setSubmitPossible] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    name: currentUser.name,
-    email: currentUser.email,
-  });
-  const [errors, setErrors] = useState({});
+
+  const [readOnly, setReadOnly] = useState(true);
+  const [nameProfile, setNameProfile] = useState("");
+  const [emailProfile, setEmailProfile] = useState("");
+  const [dataDirty, setDataDirty] = useState(false);
+  const [dataError, setDataError] = useState(
+    "Что-то пошло не так. Имя не должно быть пустым или некорректный Email"
+  );
+
+  const [formValid, setFormValid] = useState(false);
+  const disabledBtn =
+    currentUser.email === emailProfile && currentUser.name === nameProfile;
+
+  const edit = "Редактировать";
+  const save = "Сохранить";
 
   useEffect(() => {
-    if (errors && Object.keys(errors).length === 0)
-      if (
-        userInfo.name !== currentUser.name ||
-        userInfo.email !== currentUser.email
-      ) {
-        setSubmitPossible(true);
-      } else {
-        setSubmitPossible(false);
-      }
-  }, [
-    errors,
-    currentUser.email,
-    currentUser.name,
-    userInfo.email,
-    userInfo.name,
-  ]);
+    setReadOnly(true);
+  }, []);
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setUserInfo({
-      ...userInfo,
-      [name]: value,
-    });
+  useEffect(() => {
+    if (dataError) {
+      setFormValid(false);
+    } else {
+      setFormValid(true);
+    }
+  }, [dataError]);
 
-    const { [name]: removedError, ...rest } = errors;
-    const error = validate[name](value);
-    setErrors({
-      ...rest,
-      ...(error && { [name]: userInfo[name] && error }),
-    });
-  }
+  useEffect(() => {
+    setNameProfile(currentUser.name);
+    setEmailProfile(currentUser.email);
+  }, [currentUser]);
 
-  function handleSignOut() {
-    signOut();
-  }
-
-  function handleEditProfile(e) {
+  function handleClickEdit(e) {
     e.preventDefault();
-    const { name, email } = userInfo;
-    updateProfile(email, name);
+    setReadOnly(false);
+  }
+
+  function handleChangeName(e) {
+    setNameProfile(e.target.value);
+    if (
+      (!e.target.validity.valid && e.target.value.length < 3) ||
+      e.target.value.length > 20
+    ) {
+      setDataError(
+        "Что-то пошло не так. Имя не должно быть пустым или некорректный Email"
+      );
+      if (!e.target.value) {
+        setDataError("Имя не может быть пустым");
+      }
+    } else {
+      setDataError("");
+    }
+  }
+
+  function handleChangeEmail(e) {
+    setEmailProfile(e.target.value);
+    if (
+      !String(e.target.value)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+    ) {
+      setDataError(
+        "Что-то пошло не так. Имя не должно быть пустым или некорректный Email"
+      );
+      if (!e.target.value) {
+        setDataError("Email не может быть пустым");
+      }
+    } else {
+      setDataError("");
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    props.onUpdateUser({
+      name: nameProfile,
+      email: emailProfile,
+    });
+    setReadOnly(true);
+  }
+
+  function blurHandler(e) {
+    switch (e.target.name) {
+      case "nameprofile":
+        setDataDirty(true);
+        break;
+      case "emailprofile":
+        setDataDirty(true);
+        break;
+      default:
+        break;
+    }
   }
 
   return (
-    <form className='profile' onSubmit={handleEditProfile}>
-      <div className='profile__info'>
-        <h1 className='profile__heading'>Привет, {currentUser.name}!</h1>
-        <div className='profile__unit'>
-          <label className='profile__key' htmlFor='profile-name'>
+    <div className="profile">
+      <div className="profile__container">
+        <h2 className="profile__title">Привет, {currentUser.name}!</h2>
+        <form
+          className="profile__form"
+          action="/"
+          name="formprofile"
+          onSubmit={handleSubmit}
+        >
+          <label className="profile__label" htmlFor="nameprofile">
             Имя
+            <input
+              type="text"
+              className="profile__input"
+              name="nameprofile"
+              id="nameprofile"
+              minLength="2"
+              maxLength="20"
+              value={nameProfile ? nameProfile : ""}
+              onChange={handleChangeName}
+              onBlur={blurHandler}
+              required
+              readOnly={readOnly}
+            />
           </label>
-          <input
-            className='profile__value'
-            name='name'
-            id='profile-name'
-            type='text'
-            value={userInfo.name || ''}
-            onChange={handleChange}
-            placeholder={userInfo.name || ''}
-          />
-        </div>
-        {errors.name && <p className='profile__error'>{errors.name}</p>}
-        <hr className='profile__line' />
-        <div className='profile__unit'>
-          <label className='profile__key' htmlFor='profile-email'>
-            Почта
+          <label className="profile__label" htmlFor="emailprofile">
+            E-mail
+            <input
+              type="email"
+              className="profile__input"
+              id="emailprofile"
+              name="emailprofile"
+              minLength="2"
+              maxLength="100"
+              value={emailProfile ? emailProfile : ""}
+              onChange={handleChangeEmail}
+              onBlur={blurHandler}
+              required
+              readOnly={readOnly}
+            />
           </label>
-          <input
-            className='profile__value'
-            name='email'
-            id='profile-email'
-            type='email'
-            value={userInfo.email || ''}
-            onChange={handleChange}
-            placeholder={userInfo.email || ''}
-          />
-        </div>
-        {errors.email && <p className='profile__error'>{errors.email}</p>}
-      </div>
-      <div className='profile__buttons'>
-        <button
-          type='submit'
-          className={`profile__button profile__button_active_${submitPossible}`}
-          disabled={!submitPossible}>
-          Редактировать
-        </button>
-        <button
-          className='profile__button profile__button_quit'
-          onClick={handleSignOut}>
+          {dataDirty && dataError && (
+            <div className="error-form">{dataError}</div>
+          )}
+          {!readOnly ? (
+            <BtnSaveProfile
+              saveText={save}
+              onDisabled={!formValid || disabledBtn}
+            />
+          ) : (
+            <BtnEditProfile editText={edit} onHandleClick={handleClickEdit} />
+          )}
+        </form>
+        <Link className="profile__link" to="/" onClick={props.handleSignOut}>
           Выйти из аккаунта
-        </button>
+        </Link>
       </div>
-    </form>
+    </div>
   );
 }
 
-export default withRouter(Profile);
+export default Profile;

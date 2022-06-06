@@ -11,6 +11,7 @@ import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
@@ -68,7 +69,7 @@ function App() {
           <Profile/>
         </Route>
 
-        <Route path='/movies'>
+        <ProtectedRoute path='/movies'>
           <Header
             isNavigation={!isLogged}
           />
@@ -76,9 +77,9 @@ function App() {
             movies={movies}
           />
           <Footer/>
-        </Route>
+        </ProtectedRoute>
 
-        <Route path='/saved-movies'>
+        <ProtectedRoute path='/saved-movies'>
           <Header
             isNavigation={!isLogged}
           />
@@ -86,7 +87,7 @@ function App() {
             movies={movies}
           />
           <Footer/>
-        </Route>
+        </ProtectedRoute>
       </Switch>
     </div>
     </CurrentUserContext.Provider>

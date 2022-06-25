@@ -6,17 +6,30 @@ import SignNav from '../Form/SignNav/SignNav';
 import { useState } from 'react';
 import './Login.css';
 
-function Login() {
+function Login(props) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [submitPossible, setSubmitPossible] = useState(true);
 
-  function handleChange() {
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
 
+    const { [name]: removedError, ...rest } = errors;
+    const error = props.validate[name](value);
+    setErrors({
+      ...rest,
+      ...(error && { [name]: values[name] && error }),
+    });
   }
 
-  function handleSignIn() {
-
+  function handleSignIn(e) {
+    e.preventDefault();
+    const { email, password } = values;
+    props.signIn(email, password);
   }
 
   return (

@@ -1,68 +1,81 @@
-import { useState } from 'react';
-import './Register.css';
-import FormHeader from '../Form/FormHeader/FormHeader';
-import Form from '../Form/Form';
-import Input from '../Form/Input/Input';
+import { useState } from "react";
+import "./Register.css";
+import FormHeader from "../Form/FormHeader/FormHeader";
+import Form from "../Form/Form";
+import Input from "../Form/Input/Input";
 import SignNav from "../Form/SignNav/SignNav";
 import SubmitButton from "../Form/SubmitButton/SubmitButton";
 
-function Register() {
+function Register(props) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [submitPossible, setSubmitPossible] = useState(true);
 
-  function handleChange() {
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
 
+    const { [name]: removedError, ...rest } = errors;
+    const error = props.validate[name](value);
+    setErrors({
+      ...rest,
+      ...(error && { [name]: values[name] && error }),
+    });
   }
 
-  function handleSignUp() {
-
+  function handleSignUp(e) {
+    e.preventDefault();
+    const { email, password, name } = values;
+    props.signUp(email, password, name);
   }
 
   return (
-    <section className='register'>
-      <FormHeader title='Добро пожаловать!'/>
+    <section className="register">
+      <FormHeader title="Добро пожаловать!" />
       <Form onSubmit={handleSignUp}>
         <div>
           <Input
-            name='name'
-            label='Имя'
-            type='text'
-            autoComplete='username'
-            value={values.name || ''}
+            name="name"
+            label="Имя"
+            type="text"
+            autoComplete="username"
+            value={values.name || ""}
             onChange={handleChange}
             errors={errors.name}
-            placeholder='Джон Смит'
+            placeholder="Джон Смит"
           />
           <Input
-            name='email'
-            label='E-mail'
-            type='email'
-            autoComplete='email'
-            value={values.email || ''}
+            name="email"
+            label="E-mail"
+            type="email"
+            autoComplete="email"
+            value={values.email || ""}
             onChange={handleChange}
             errors={errors.email}
-            placeholder='johnsmith@mail.com'
+            placeholder="johnsmith@mail.com"
           />
           <Input
-            name='password'
-            label='Пароль'
-            type='password'
-            autoComplete='new-password'
-            value={values.password || ''}
+            name="password"
+            label="Пароль"
+            type="password"
+            autoComplete="new-password"
+            value={values.password || ""}
             onChange={handleChange}
             errors={errors.password}
-            placeholder='Супер надежный пароль'
+            placeholder="Супер надежный пароль"
           />
         </div>
         <SubmitButton
           submitPossible={submitPossible}
-          label='Зарегистрироваться'
+          label="Зарегистрироваться"
         />
       </Form>
-      <SignNav label='Уже зарегистрированы?' link='Войти' to='/signin' />
+      <SignNav label="Уже зарегистрированы?" link="Войти" to="/signin" />
     </section>
-  )
+  );
 }
 
 export default Register;
